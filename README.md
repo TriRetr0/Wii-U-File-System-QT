@@ -3,8 +3,8 @@
 
 ## Include Injector, Extractor and fuse (linux only)
 
-Write in python with pyqt5
+Write in python3 with pyqt5
 
 
 
-Join [my Discord](https://discord.gg/PynXrnU) if you have a problem
+Join [**my Discord**](https://discord.gg/PynXrnU) if you have a problem
