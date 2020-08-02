@@ -7,6 +7,8 @@ from PyQt5 import QtWidgets
 from PyQt5.QtGui import QIcon
 import mainGUI
 
+
+
 class MyWindow(QtWidgets.QMainWindow):
 
     def __init__(self, parent=None):
@@ -18,21 +20,26 @@ class MyWindow(QtWidgets.QMainWindow):
 
         self.ui.pushButton.clicked.connect(self.mount_action)
         self.ui.pushButton_4.clicked.connect(self.action_4)
+        self.ui.pushButton_3.clicked.connect(self.action_3)
+        self.ui.pushButton_2.clicked.connect(self.action_2)
         self.ui.pushButton_5.clicked.connect(self.action_5)
         self.ui.pushButton_6.clicked.connect(self.action_6)
-        self.ui.lineEdit.editingFinished.connect(self.seeprom)
-        self.ui.lineEdit_2.editingFinished.connect(self.otp)
-        self.ui.lineEdit_3.editingFinished.connect(self.img)
-        self.ui.lineEdit_4.editingFinished.connect(self.filein)
-        self.ui.lineEdit_5.editingFinished.connect(self.path)
-        self.ui.lineEdit_6.editingFinished.connect(self.fileex)
-        self.ui.lineEdit_7.editingFinished.connect(self.mount)
         self.ui.checkBox.toggled['bool'].connect(self.mlc)
         self.ui.checkBox_2.toggled['bool'].connect(self.device)
 
-
     def mount_action(self):
-        os.system("./wfs-fuse --image ")
+        seepromFile = self.ui.lineEdit.text()
+        otpFile = self.ui.lineEdit_2.text()
+        imgFile = self.ui.lineEdit_3.text()
+        pathFile = self.ui.lineEdit_5.text()
+        mntWre = self.ui.lineEdit_7.text()
+        PassWord = self.ui.lineEdit_8.text()
+        if self.ui.checkBox.isChecked() == False :
+            MLC = "--usb"
+        else:
+            MLC = "--mlc"
+        print(f'seeprom : {seepromFile}')
+        os.system(f'echo {PassWord} | sudo -S ./wfs-fuse {imgFile} {mntWre} --otp {otpFile} --seeprom {seepromFile} -o allow_other {MLC}')
 
     def action_4(self):
         webbrowser.open("https://discord.gg/PynXrnU")
@@ -43,26 +50,29 @@ class MyWindow(QtWidgets.QMainWindow):
     def action_6(self):
         webbrowser.open("https://github.com/koolkdev/wfslib")
 
-    def seeprom(self):
-        print(self.ui.lineEdit.text())
+    def action_3(self):
+        if self.ui.checkBox.isChecked() == False :
+            MLC = "--usb"
+        else:
+            MLC = "--mlc"
+        seepromFile = self.ui.lineEdit.text()
+        otpFile = self.ui.lineEdit_2.text()
+        imgFile = self.ui.lineEdit_3.text()
+        ExtFile = self.ui.lineEdit_6.text()
+        OutDir = self.ui.lineEdit_9.text()
+        os.system(f'./wfs-extract --input {imgFile} --otp {otpFile} --seeprom {seepromFile} --output {OutDir} --dump-path {ExtFile} {MLC}')
 
-    def otp(self):
-        print(self.ui.lineEdit_2.text())
-
-    def img(self):
-        print(self.ui.lineEdit_3.text())
-
-    def filein(self):
-        print(self.ui.lineEdit_4.text())
-
-    def path(self):
-        print(self.ui.lineEdit_5.text())
-
-    def fileex(self):
-        print(self.ui.lineEdit_6.text())
-
-    def mount(self):
-        print(self.ui.lineEdit_7.text())
+    def action_2(self):
+        if self.ui.checkBox.isChecked() == False :
+            MLC = "--usb"
+        else:
+            MLC = "--mlc"
+        seepromFile = self.ui.lineEdit.text()
+        otpFile = self.ui.lineEdit_2.text()
+        imgFile = self.ui.lineEdit_3.text()
+        injFile = self.ui.lineEdit_4.text()
+        injPath = self.ui.lineEdit_5.text()
+        os.system(f'./wfs-file-injector --image {imgFile} --inject-file {injFile} --inject-path {injPath} --otp {otpFile} --seeprom {seepromFile} {MLC}')
 
     def mlc(self):
         if self.ui.checkBox.isChecked() == False :
@@ -77,7 +87,7 @@ class MyWindow(QtWidgets.QMainWindow):
     def device(self):
         if self.ui.checkBox_2.isChecked() == True :
             self.ui.label_3.setText("Device")
-            self.ui.lineEdit_3.setText("/dev/sd?")
+            self.ui.lineEdit_3.setText("/dev/???/")
         else:
             self.ui.label_3.setText("Image")
             self.ui.lineEdit_3.setText("")
