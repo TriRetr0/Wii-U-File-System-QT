@@ -18,6 +18,6 @@ just run :
 
 For Windows :
 
-Replace wfs-extract and wfs-file-injector by the .exe file in the releases page of wfslib repository and run : 
+Replace wfs-extract and wfs-file-injector by the .exe file in the releases page of wfslib repository , rename it and run : 
 
 `python3 main.py`
